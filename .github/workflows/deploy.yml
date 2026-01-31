@@ -37,7 +37,7 @@ jobs:
 
       # 4. 更新 Cloud Run Job
       - name: Deploy to Cloud Run Job
-        run: |-
-          gcloud run jobs update ${{ env.JOB_NAME }} \
-            --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            --region ${{ env.REGION }}
+        run: |-
+           gcloud run jobs update ${{ env.JOB_NAME }} \
+           --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+           --region ${{ env.REGION }} 
