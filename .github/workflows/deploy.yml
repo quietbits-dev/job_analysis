@@ -5,11 +5,11 @@ on:
     branches: [ "main" ] # 當 main 分支有更新時觸發
 
 env:
-  PROJECT_ID: your-gcp-project-id
+  PROJECT_ID: query-485808
   REGION: asia-east1
-  REPO_NAME: your-artifact-repo-name
-  IMAGE_NAME: crawler-job
-  JOB_NAME: my-daily-scraper
+  REPO_NAME: crawl104
+  IMAGE_NAME: 104_crawl
+  JOB_NAME: craw104
 
 jobs:
   deploy:
@@ -22,7 +22,7 @@ jobs:
       - name: Google Auth
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GETLINK }}'
+          credentials_json: '${{ secrets.GCP_KEY }}'
 
       # 2. 設定 Docker 登入 Artifact Registry
       - name: Docker Auth
