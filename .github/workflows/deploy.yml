@@ -1,0 +1,43 @@
+name: Build and Deploy to Cloud Run Job
+
+on:
+  push:
+    branches: [ "main" ] # 當 main 分支有更新時觸發
+
+env:
+  PROJECT_ID: your-gcp-project-id
+  REGION: asia-east1
+  REPO_NAME: your-artifact-repo-name
+  IMAGE_NAME: crawler-job
+  JOB_NAME: my-daily-scraper
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. 登入 GCP
+      - name: Google Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GETLINK }}'
+
+      # 2. 設定 Docker 登入 Artifact Registry
+      - name: Docker Auth
+        run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      # 3. 編譯並推送 Docker 鏡像
+      - name: Build and Push Container
+        run: |-
+          docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      # 4. 更新 Cloud Run Job
+      - name: Deploy to Cloud Run Job
+        run: |-
+          gcloud run jobs update ${{ env.JOB_NAME }} \
+            --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --region ${{ env.REGION }}
