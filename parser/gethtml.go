@@ -13,10 +13,11 @@ import (
 
 // 定義資料結構，方便之後轉 JSON
 type JobResult struct {
-	Title       string `json:"title"`
-	Link        string `json:"link"`
-	Description string `json:"description"`
-	Company     string `json:"company"`
+	Title        string `json:"title"`
+	Link         string `json:"link"`
+	Description  string `json:"description"`
+	Company_Name string `json:"company"`
+	Company_Link string `json:"company_link"`
 }
 
 func Gethtml(url string, index int) []JobResult {
@@ -58,16 +59,12 @@ func Gethtml(url string, index int) []JobResult {
 		if exists && title != "" {
 			// 修正點：呼叫 Getlink 取得詳細內容
 			// 注意：這裡建議傳入 ctx 以節省開啟瀏覽器的開銷 (如前次討論)
-			description, _ := Getlink(ctx, href)
+			singlejob, err := Getlink(ctx, href)
+			if err == nil {
+				// 2. 使用 append 將這一筆資料「存入」你的結果清單中
+				results = append(results, singlejob)
+			}
 
-			results = append(results, JobResult{
-				Title:       title,
-				Link:        href,
-				Description: description,
-				Company:     "",
-			})
-
-			//fmt.Printf("已完成第 %d 筆: %s\n", i+1, title)
 		}
 
 	})
