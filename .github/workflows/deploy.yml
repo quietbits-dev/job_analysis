@@ -43,3 +43,4 @@ jobs:
            gcloud run jobs update ${{ env.JOB_NAME }} \
            --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
            --region ${{ env.REGION }} 
+           --set-env-vars LINKNBUCKET="${{ env.LINKNBUCKET }}"  # Put it on Cloud Run
