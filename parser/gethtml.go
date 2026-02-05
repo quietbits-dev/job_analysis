@@ -60,6 +60,8 @@ func Gethtml(url string, index int) []JobResult {
 			// 修正點：呼叫 Getlink 取得詳細內容
 			// 注意：這裡建議傳入 ctx 以節省開啟瀏覽器的開銷 (如前次討論)
 			singlejob, err := Getlink(ctx, href)
+			singlejob.Title = title
+			singlejob.Link = href
 			if err == nil {
 				// 2. 使用 append 將這一筆資料「存入」你的結果清單中
 				results = append(results, singlejob)
