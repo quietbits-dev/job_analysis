@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
+        env:
+          MY_JSON_CONFIG: ${{ secrets.LINKNBUCKET }} # bucket info and job link
         uses: actions/checkout@v4
 
       # 1. 登入 GCP

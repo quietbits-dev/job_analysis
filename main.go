@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 )
 
@@ -16,11 +17,17 @@ func main() {
 	var CurrentURL string
 	var bucketName string
 
-	file, _ := os.Open("./config/Getlink.json")
-	defer file.Close()
-
+	//file, _ := os.Open("./config/Getlink.json")
+	jsonStr := os.Getenv("LINKNBUCKET")
+	//defer file.Close()
+	if jsonStr == "" {
+		fmt.Println("錯誤: 環境變數 MY_JSON_CONFIG 為空")
+		return
+	}
+	reader := strings.NewReader(jsonStr)
 	var config map[string]interface{}
-	decoder := json.NewDecoder(file)
+	//decoder := json.NewDecoder(file)
+	decoder := json.NewDecoder(reader)
 	err := decoder.Decode(&config)
 
 	if err != nil {

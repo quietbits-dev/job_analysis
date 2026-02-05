@@ -1,5 +1,5 @@
 # 忽略金鑰檔案
-gcp-key.json
+*.json
 
 # 忽略 exe
 *.exe
