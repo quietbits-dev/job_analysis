@@ -18,7 +18,7 @@ func main() {
 	var bucketName string
 
 	//file, _ := os.Open("./config/Getlink.json")
-	jsonStr := os.Getenv("LINKNBUCKET")
+	jsonStr := os.Getenv("LINKNBUCKET") //RETRY_4
 	//defer file.Close()
 	if jsonStr == "" {
 		fmt.Println("錯誤: 環境變數 LINKNBUCKET 為空")
