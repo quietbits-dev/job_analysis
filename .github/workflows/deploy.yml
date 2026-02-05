@@ -14,8 +14,6 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      LINKNBUCKET: ${{ secrets.LINKNBUCKET }} # bucket info and job link
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,6 +39,7 @@ jobs:
       - name: Deploy to Cloud Run Job
         run: |-
            gcloud run jobs update ${{ env.JOB_NAME }} \
-           --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+           --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }w}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
            --region ${{ env.REGION }} 
-           --set-env-vars LINKNBUCKET="${{ env.LINKNBUCKET }}"  # Put it on Cloud Run
+           --set-env-vars "LINKNBUCKET=${{ secrets.LINKNBUCKET }}"
+          # --set-env-vars LINKNBUCKET="${{ env.LINKNBUCKET }}"  # Put it on Cloud Run
