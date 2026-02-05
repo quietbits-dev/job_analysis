@@ -21,7 +21,6 @@ RUN apk add --no-cache \
 ENV CHROME_BIN=/usr/bin/chromium-browser
 
 COPY --from=builder /app .
-COPY --from=builder /app/config/Getlink.json .
 COPY --from=builder /app/parser/gethtml.go .
 COPY --from=builder /app/parser/getlink.go .
 COPY --from=builder /app/repo/insert.go .
