@@ -14,10 +14,10 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      LINKNBUCKET: ${{ secrets.LINKNBUCKET }} # bucket info and job link
     steps:
       - name: Checkout code
-        env:
-          LINKNBUCKET: ${{ secrets.LINKNBUCKET }} # bucket info and job link
         uses: actions/checkout@v4
 
       # 1. 登入 GCP
