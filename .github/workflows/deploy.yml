@@ -30,7 +30,7 @@ jobs:
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       # 3. 編譯並推送 Docker 鏡像
-      - name: Build and Push Container
+      - name: Build and Push Containerw
         run: |-
           docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
           docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -38,8 +38,8 @@ jobs:
       # 4. 更新 Cloud Run Job
       - name: Deploy to Cloud Run Job
         run: |-
-           gcloud run jobs update ${{ env.JOB_NAME }} \
-           --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }w}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-           --region ${{ env.REGION }} 
-           --set-env-vars "LINKNBUCKET=${{ secrets.LINKNBUCKET }}"
+                gcloud run jobs update ${{ env.JOB_NAME }} \
+                  --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+                  --region ${{ env.REGION }} \
+                  --set-env-vars "LINKNBUCKET=${{ secrets.LINKNBUCKET }}"
           # --set-env-vars LINKNBUCKET="${{ env.LINKNBUCKET }}"  # Put it on Cloud Run

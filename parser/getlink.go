@@ -61,7 +61,7 @@ func Getlink(ctx context.Context, url string) (JobResult, error) {
 		if exists {
 			jobResult.Company_Link = out3
 			fmt.Println("公司Link:", jobResult.Company_Link)
-			fmt.Println("================================================")
+			fmt.Println("==================================================")
 			return false
 		}
 		return true
