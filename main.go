@@ -8,22 +8,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 	"sync"
 )
 
 func main() {
 	var wg sync.WaitGroup
-	var CurrentURL string
-	var bucketName string
-
 	//file, _ := os.Open("./config/Getlink.json")
-	jsonStr := os.Getenv("LINKNBUCKET") //RETRY_4
+	Bucket := os.Getenv("BUCKET") 
+	Link :=  os.Getenv("LINK") 
 	//defer file.Close()
-	if jsonStr == "" {
-		fmt.Println("錯誤: 環境變數 LINKNBUCKET 為空")
+	if Bucket == "" || Link == ""  {
+		fmt.Println("錯誤: 環境變數 BUCKET 或 LINK 為空")
 		return
 	}
+
+	/*
 	reader := strings.NewReader(jsonStr)
 	var config map[string]interface{}
 	//decoder := json.NewDecoder(file)
@@ -37,13 +36,13 @@ func main() {
 		CurrentURL = config["link"].(string)
 		bucketName = config["bucket"].(string)
 	}
-
+	*/
 	for i := 1; i <= 5; i++ { //並發爬取 5 頁
 		wg.Add(1)
 		go func(index int) {
 			defer wg.Done()
 
-			pageResults := parser.Gethtml(CurrentURL, index)
+			pageResults := parser.Gethtml(Link, index)
 
 			// 將爬取到的每個職缺資訊轉換成 JSON 並上傳
 			for _, job := range pageResults {
@@ -62,7 +61,7 @@ func main() {
 				objectName := fmt.Sprintf("%s.json", jobID)
 				data := bytes.NewReader(jsonData)
 
-				if err := repo.GcsUpload(bucketName, objectName, data); err != nil {
+				if err := repo.GcsUpload(Bucket, objectName, data); err != nil {
 					fmt.Printf("上傳 %s 失敗: %v\n", objectName, err)
 				}
 			}
