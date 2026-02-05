@@ -31,7 +31,7 @@ func main() {
 		bucketName = config["bucket"].(string)
 	}
 
-	for i := 1; i <= 10; i++ { //並發爬取 5 頁
+	for i := 1; i <= 5; i++ { //並發爬取 5 頁
 		wg.Add(1)
 		go func(index int) {
 			defer wg.Done()
