@@ -18,6 +18,8 @@ type JobResult struct {
 	Description  string `json:"description"`
 	Company_Name string `json:"company"`
 	Company_Link string `json:"company_link"`
+	Injest_date  string `jsone:"injest_date"`
+	Uuid         string `json:"uuid"`
 }
 
 func Gethtml(url string, index int) []JobResult {

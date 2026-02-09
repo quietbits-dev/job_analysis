@@ -2,6 +2,7 @@ package parser
 
 import (
 	"context"
+	"crypto/md5"
 	"fmt"
 	"strings"
 	"time"
@@ -66,6 +67,10 @@ func Getlink(ctx context.Context, url string) (JobResult, error) {
 		}
 		return true
 	})
+
+	jobResult.Injest_date = time.Now().Format("2006-01-02")
+	pre_uuid := fmt.Sprintf("%s/%s", url, jobResult.Injest_date)
+	jobResult.Uuid = fmt.Sprintf("%x", md5.Sum([]byte(pre_uuid)))
 
 	return jobResult, nil
 }

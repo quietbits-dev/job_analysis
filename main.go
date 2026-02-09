@@ -14,29 +14,14 @@ import (
 func main() {
 	var wg sync.WaitGroup
 	//file, _ := os.Open("./config/Getlink.json")
-	Bucket := os.Getenv("BUCKET") 
-	Link :=  os.Getenv("LINK") 
+	Bucket := os.Getenv("BUCKET")
+	Link := os.Getenv("LINK")
 	//defer file.Close()
-	if Bucket == "" || Link == ""  {
+	if Bucket == "" || Link == "" {
 		fmt.Println("錯誤: 環境變數 BUCKET 或 LINK 為空")
 		return
 	}
 
-	/*
-	reader := strings.NewReader(jsonStr)
-	var config map[string]interface{}
-	//decoder := json.NewDecoder(file)
-	decoder := json.NewDecoder(reader)
-	err := decoder.Decode(&config)
-
-	if err != nil {
-		fmt.Println("Error decoding JSON:", err)
-	} else {
-		fmt.Println("", config["link"])
-		CurrentURL = config["link"].(string)
-		bucketName = config["bucket"].(string)
-	}
-	*/
 	for i := 1; i <= 5; i++ { //並發爬取 5 頁
 		wg.Add(1)
 		go func(index int) {
